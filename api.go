@@ -5,7 +5,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
+
+// 5mb log file size limit, adjust to your liking
+const FILE_SIZE_LIMIT = 5242880
 
 var (
 	WarningLogger *log.Logger
@@ -14,6 +18,23 @@ var (
 )
 
 func init() {
+	fi, err := os.Stat("logs.txt")
+	if err != nil {
+		// handle any errors besides the log file maybe not existing
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			log.Fatal(err)
+		}
+	}
+
+	// if the file exists, and it's too large, delete it
+	if fi != nil && fi.Size() > FILE_SIZE_LIMIT {
+		err = os.Remove("logs.txt")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	// create/read the file for logging
 	file, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
