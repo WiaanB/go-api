@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
 // 5mb log file size limit, adjust to your liking
@@ -46,7 +48,12 @@ func init() {
 }
 
 func main() {
-	InfoLogger.Println("Starting the api...")
+	// load the .env file
+	err := godotenv.Load(".env")
+	if err != nil {
+		ErrorLogger.Println("Failed to read .env file")
+		log.Fatal(err)
+	}
 
 	http.HandleFunc("/", welcomeHandler)
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
