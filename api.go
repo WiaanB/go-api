@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -8,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 // 5mb log file size limit, adjust to your liking
@@ -17,6 +20,7 @@ var (
 	WarningLogger *log.Logger
 	ErrorLogger   *log.Logger
 	InfoLogger    *log.Logger
+	DB            *sql.DB
 )
 
 func init() {
@@ -55,9 +59,30 @@ func main() {
 		log.Fatal(err)
 	}
 
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost", 5432, os.Getenv("USERNAME"), os.Getenv("PASSWORD"), os.Getenv("USERNAME"))
+	// create a db instance for postgres
+	DB, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		// should only fail if the information is wrong or the pq driver isn't imported
+		ErrorLogger.Println("Failed to create DB instance for postgres")
+		log.Fatal(err)
+	}
+	defer DB.Close()
+
+	// test the db connection to see if it works
+	err = DB.Ping()
+	if err != nil {
+		ErrorLogger.Printf("Failed to connect to postgres:%s\n", os.Getenv("USERNAME"))
+		log.Fatal(err)
+	} else {
+		InfoLogger.Printf("Connection established to the %s database\n", os.Getenv("USERNAME"))
+	}
+
+	// setup the routes and listen on port :9999
 	http.HandleFunc("/", welcomeHandler)
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
 
+	InfoLogger.Println("Starting the api...")
 	http.ListenAndServe(":9999", nil)
 }
 
