@@ -40,9 +40,9 @@ func init() {
 		log.Fatal(err)
 	}
 
-	InfoLogger = log.New(file, "\033[34m"+"INFO:"+"\033[0m", log.Ldate|log.Ltime|log.Lshortfile)
-	ErrorLogger = log.New(file, "\033[31m"+"ERROR:"+"\033[0m", log.Ldate|log.Ltime|log.Lshortfile)
-	WarningLogger = log.New(file, "\033[33m"+"WARNING:"+"\033[0m", log.Ldate|log.Ltime|log.Lshortfile)
+	InfoLogger = log.New(file, "\033[34m"+"INFO: "+"\033[0m", log.Ldate|log.Ltime|log.Lshortfile)
+	ErrorLogger = log.New(file, "\033[31m"+"ERROR :"+"\033[0m", log.Ldate|log.Ltime|log.Lshortfile)
+	WarningLogger = log.New(file, "\033[33m"+"WARNING: "+"\033[0m", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
 func main() {
