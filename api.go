@@ -67,7 +67,6 @@ func main() {
 		ErrorLogger.Println("Failed to create DB instance for postgres")
 		log.Fatal(err)
 	}
-	defer DB.Close()
 
 	// test the db connection to see if it works
 	err = DB.Ping()
@@ -78,12 +77,15 @@ func main() {
 		InfoLogger.Printf("Connection established to the %s database\n", os.Getenv("USERNAME"))
 	}
 
+	// setup the base tables required for the library example
+	initializeTables(DB)
+
 	// setup the routes and listen on port :9999
 	http.HandleFunc("/", welcomeHandler)
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
 
 	InfoLogger.Println("Starting the api...")
-	http.ListenAndServe(":9999", nil)
+	defer http.ListenAndServe(":9999", nil)
 }
 
 func welcomeHandler(w http.ResponseWriter, req *http.Request) {
