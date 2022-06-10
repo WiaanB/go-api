@@ -81,11 +81,13 @@ func main() {
 	initializeTables(DB)
 
 	// setup the routes and listen on port :9999
-	http.HandleFunc("/", welcomeHandler)
-	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
+	mux := http.NewServeMux()
+	mux.HandleFunc("/users/", handleUsers)
+	mux.HandleFunc("/", welcomeHandler)
+	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {})
 
 	InfoLogger.Println("Starting the api...")
-	defer http.ListenAndServe(":9999", nil)
+	defer http.ListenAndServe(":9999", mux)
 }
 
 func welcomeHandler(w http.ResponseWriter, req *http.Request) {
