@@ -1,28 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 )
 
 func handleUsers(w http.ResponseWriter, req *http.Request) {
 	// Receiving the body to pass along
-	var body interface{}
-	b, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		ErrorLogger.Println("Failed to verify JSON body")
-		log.Fatal(err)
-	} else {
-		if len(b) > 0 {
-			err = json.Unmarshal(b, &body)
-			if err != nil {
-				ErrorLogger.Println("Failed to verify JSON body")
-			}
-		}
-	}
+	body := readRequestBody(req)
 	// Handle the types of requests
 	switch req.Method {
 	case "GET":
