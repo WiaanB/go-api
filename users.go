@@ -1,15 +1,32 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func handleUsers(w http.ResponseWriter, req *http.Request) {
-	// Printing the Request
+	// Receiving the body to pass along
+	var body interface{}
+	b, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		ErrorLogger.Println("Failed to verify JSON body")
+		log.Fatal(err)
+	} else {
+		if len(b) > 0 {
+			err = json.Unmarshal(b, &body)
+			if err != nil {
+				ErrorLogger.Println("Failed to verify JSON body")
+			}
+		}
+	}
+	// Handle the types of requests
 	switch req.Method {
 	case "GET":
-		usersGET()
+		usersGET(body)
 	case "POST":
 		usersPOST()
 	case "PUT":
@@ -19,8 +36,15 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func usersGET() {
-	fmt.Println("GET USERS")
+func usersGET(body interface{}) {
+	m, ok := body.(map[string]interface{})
+	if !ok {
+		ErrorLogger.Println("Could not read the JSON body.")
+		fmt.Println("OOPS")
+	}
+	for k, v := range m {
+		fmt.Println(k, "=>", v)
+	}
 }
 
 func usersPOST() {
