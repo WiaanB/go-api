@@ -22,14 +22,11 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 }
 
 func usersGET(body interface{}) {
-	m, ok := body.(map[string]interface{})
-	if !ok {
-		ErrorLogger.Println("Could not read the JSON body.")
-		fmt.Println("OOPS")
+	m, test := interfaceToMap(body)
+	if test {
+		ErrorLogger.Println("Failed to convert JSON body")
 	}
-	for k, v := range m {
-		fmt.Println(k, "=>", v)
-	}
+	fmt.Println("Hehe", m)
 }
 
 func usersPOST() {
