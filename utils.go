@@ -8,8 +8,8 @@ import (
 	"net/http"
 )
 
+// Read a body for the request if there is one, else return an empty interface{}
 func readRequestBody(r *http.Request) interface{} {
-	// Read a body for the request if there is one, else retur nan empty interface{}
 	var body interface{}
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -26,6 +26,7 @@ func readRequestBody(r *http.Request) interface{} {
 	return body
 }
 
+// Try to cast a interface into a JSON map[string]interface{}
 func interfaceToMap(b interface{}) (map[string]interface{}, bool) {
 	m, ok := b.(map[string]interface{})
 	if !ok {
