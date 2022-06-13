@@ -27,10 +27,10 @@ func readRequestBody(r *http.Request) interface{} {
 
 // Try to cast a interface into a JSON map[string]interface{}
 func interfaceToMap(b interface{}) (map[string]interface{}, bool) {
-	m, ok := b.(map[string]interface{})
-	if !ok {
+	if m, ok := b.(map[string]interface{}); !ok {
 		ErrorLogger.Println("Could not read the JSON body.")
 		return nil, true
+	} else {
+		return m, false
 	}
-	return m, false
 }
