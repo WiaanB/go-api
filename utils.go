@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -32,9 +31,6 @@ func interfaceToMap(b interface{}) (map[string]interface{}, bool) {
 	if !ok {
 		ErrorLogger.Println("Could not read the JSON body.")
 		return nil, true
-	}
-	for k, v := range m {
-		fmt.Println(k, "=>", v)
 	}
 	return m, false
 }
