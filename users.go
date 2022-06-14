@@ -26,34 +26,6 @@ func usersGET(body interface{}) {
 	if test {
 		ErrorLogger.Println("Failed to convert JSON body")
 	}
-	str := "SELECT "
-	if fields, ok := m["fields"]; ok {
-		if s, ok := fields.([]interface{}); ok {
-			for idx, val := range s {
-				str += fmt.Sprintf("%s", val)
-				if (idx + 1) != len(s) {
-					str += ", "
-				}
-			}
-			str += " "
-		} else {
-			ErrorLogger.Println("Failed to use fields slice")
-		}
-	} else {
-		str += "* "
-	}
-	str += "FROM users"
-	if fields, ok := m["where"]; ok {
-		if s, ok := fields.(map[string]interface{}); ok {
-			fmt.Println(s)
-			for idx, val := range s {
-				fmt.Println(idx, val)
-			}
-		} else {
-		}
-	} else {
-	}
-	fmt.Println(str)
 }
 
 func usersPOST() {
