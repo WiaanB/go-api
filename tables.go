@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func initializeTables(db *sql.DB) {
+func initializeTables() {
 	InfoLogger.Println("Setting up base tables...")
 	users := `DROP TABLE IF EXISTS users;
 	CREATE TABLE users (
@@ -16,8 +16,8 @@ func initializeTables(db *sql.DB) {
 		age			INT
 	);
 	`
-	executeSQL(db, users)
-	executeSQL(db, fmt.Sprintf("INSERT INTO users (name, surname, age) VALUES ('wiaan', 'botha', 23);"))
+	executeSQL(DB, users)
+	executeSQL(DB, fmt.Sprintf("INSERT INTO users (name, surname, age) VALUES ('wiaan', 'botha', 23);"))
 	books := `DROP TABLE IF EXISTS books;
 	CREATE TABLE books (
 		id 			SERIAL PRIMARY KEY,
@@ -27,8 +27,8 @@ func initializeTables(db *sql.DB) {
 		pages		INT
 	);
 	`
-	executeSQL(db, books)
-	executeSQL(db, fmt.Sprintf("INSERT INTO books (ISBN, title, author, pages) VALUES (2341, 'The Martian Threat', 'Dave Campbell', 342);"))
+	executeSQL(DB, books)
+	executeSQL(DB, fmt.Sprintf("INSERT INTO books (ISBN, title, author, pages) VALUES (2341, 'The Martian Threat', 'Dave Campbell', 342);"))
 	authors := `DROP TABLE IF EXISTS authors;
 	CREATE TABLE authors (
 		id 			SERIAL PRIMARY KEY,
@@ -37,8 +37,8 @@ func initializeTables(db *sql.DB) {
 		awards		INT
 	);
 	`
-	executeSQL(db, authors)
-	executeSQL(db, fmt.Sprintf("INSERT INTO authors (name, books, awards) VALUES ('Dave Campbell', 1, 0);"))
+	executeSQL(DB, authors)
+	executeSQL(DB, fmt.Sprintf("INSERT INTO authors (name, books, awards) VALUES ('Dave Campbell', 1, 0);"))
 }
 
 func executeSQL(db *sql.DB, query string) {

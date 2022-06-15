@@ -61,7 +61,7 @@ func main() {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", "localhost", 5432, os.Getenv("USERNAME"), os.Getenv("PASSWORD"), os.Getenv("USERNAME"))
 	// create a db instance for postgres
-	DB, err := sql.Open("postgres", psqlInfo)
+	DB, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
 		// should only fail if the information is wrong or the pq driver isn't imported
 		ErrorLogger.Println("Failed to create DB instance for postgres")
@@ -78,7 +78,7 @@ func main() {
 	}
 
 	// setup the base tables required for the library example
-	initializeTables(DB)
+	initializeTables()
 
 	// setup the routes and listen on port :9999
 	mux := http.NewServeMux()
