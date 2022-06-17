@@ -21,7 +21,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "GET":
 		response := usersGET(body)
-		fmt.Println(response)
+		fmt.Println(response...)
 		w.Header().Set("Content-Type", "application/json")
 		j, err := json.Marshal(response)
 		if err != nil {
@@ -67,10 +67,11 @@ func usersGET(body interface{}) []interface{} {
 		if err != nil {
 			ErrorLogger.Println("Failed to read DB response")
 		}
-		var inInterface map[string]interface{}
-		inrec, _ := json.Marshal(r)
-		json.Unmarshal(inrec, &inInterface)
-		resp = append(resp, inInterface)
+		fmt.Println(r)
+		var m map[string]interface{}
+		data, _ := json.Marshal(r)
+		json.Unmarshal(data, &m)
+		resp = append(resp, m)
 	}
 	return resp
 }
