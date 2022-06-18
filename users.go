@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	id      int    `json:"id"`
-	name    string `json:"name"`
-	surname string `json:"surname"`
-	age     int    `json:"age"`
+	Id      int
+	Name    string
+	Surname string
+	Age     int
 }
 
 func handleUsers(w http.ResponseWriter, req *http.Request) {
@@ -63,7 +63,7 @@ func usersGET(body interface{}) []interface{} {
 	var resp []interface{}
 	for rows.Next() {
 		var r User
-		err = rows.Scan(&r.id, &r.name, &r.surname, &r.age)
+		err = rows.Scan(&r.Id, &r.Name, &r.Surname, &r.Age)
 		if err != nil {
 			ErrorLogger.Println("Failed to read DB response")
 		}
