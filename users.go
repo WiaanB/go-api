@@ -66,13 +66,7 @@ func usersGET(body interface{}) []interface{} {
 		if err != nil {
 			ErrorLogger.Println("Failed to read DB response")
 		}
-		var m map[string]interface{}
-		data, _ := json.Marshal(r)
-		err = json.Unmarshal(data, &m)
-		if err != nil {
-			ErrorLogger.Println("Failed to convert JSON")
-		}
-		resp = append(resp, m)
+		resp = append(resp, structToMap(r))
 	}
 	return resp
 }

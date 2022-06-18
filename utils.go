@@ -34,3 +34,12 @@ func interfaceToMap(b interface{}) (map[string]interface{}, bool) {
 		return m, false
 	}
 }
+
+func structToMap(i interface{}) (m map[string]interface{}) {
+	data, _ := json.Marshal(i)
+	err := json.Unmarshal(data, &m)
+	if err != nil {
+		ErrorLogger.Println("Failed to convert JSON")
+	}
+	return
+}
