@@ -21,7 +21,6 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "GET":
 		response := usersGET(body)
-		fmt.Println(response...)
 		w.Header().Set("Content-Type", "application/json")
 		j, err := json.Marshal(response)
 		if err != nil {
@@ -67,10 +66,12 @@ func usersGET(body interface{}) []interface{} {
 		if err != nil {
 			ErrorLogger.Println("Failed to read DB response")
 		}
-		fmt.Println(r)
 		var m map[string]interface{}
 		data, _ := json.Marshal(r)
-		json.Unmarshal(data, &m)
+		err = json.Unmarshal(data, &m)
+		if err != nil {
+			ErrorLogger.Println("Failed to convert JSON")
+		}
 		resp = append(resp, m)
 	}
 	return resp
