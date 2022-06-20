@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
@@ -29,7 +28,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 		}
 		w.Write(j)
 	case "POST":
-		usersPOST(req.URL)
+		usersPOST(fmt.Sprintf("%v", req.URL))
 	case "PUT":
 		usersPUT()
 	case "DELETE":
@@ -72,8 +71,8 @@ func usersGET(body interface{}) []interface{} {
 	return resp
 }
 
-func usersPOST(u *url.URL) {
-	split := strings.Split(fmt.Sprintf("%v", u), "/")
+func usersPOST(u string) {
+	split := strings.Split(u, "/")
 	action := split[len(split)-1]
 	if action == "" {
 		fmt.Println("EMPTY?!")
