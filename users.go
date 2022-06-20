@@ -45,7 +45,6 @@ func usersGET(body interface{}) []interface{} {
 	var stmnt string
 	if id, ok := m["id"]; ok {
 		stmnt = fmt.Sprintf("SELECT * FROM users WHERE id = %d;", int(id.(float64)))
-		fmt.Println(stmnt)
 	} else if ids, ok := m["ids"]; ok {
 		var s []string
 		for _, v := range ids.([]interface{}) {
@@ -53,10 +52,8 @@ func usersGET(body interface{}) []interface{} {
 		}
 		arrStr := strings.Join(s, ",")
 		stmnt = fmt.Sprintf("SELECT * FROM users WHERE id IN (%s);", arrStr)
-		fmt.Println(stmnt)
 	} else {
 		stmnt = "SELECT * FROM users;"
-		fmt.Println(stmnt)
 	}
 	rows, err := DB.Query(stmnt)
 	var resp []interface{}
