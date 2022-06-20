@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
 type User struct {
-	Id      int
-	Name    string
-	Surname string
-	Age     int
+	Id      int    `json:"id"`
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Age     int    `json:"age"`
 }
 
 func handleUsers(w http.ResponseWriter, req *http.Request) {
@@ -28,7 +29,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 		}
 		w.Write(j)
 	case "POST":
-		usersPOST()
+		usersPOST(req.URL)
 	case "PUT":
 		usersPUT()
 	case "DELETE":
@@ -71,8 +72,13 @@ func usersGET(body interface{}) []interface{} {
 	return resp
 }
 
-func usersPOST() {
-	fmt.Println("POST USERS")
+func usersPOST(u *url.URL) {
+	split := strings.Split(fmt.Sprintf("%v", u), "/")
+	action := split[len(split)-1]
+	if action == "" {
+		fmt.Println("EMPTY?!")
+	}
+	fmt.Println("POST USERS", action)
 }
 
 func usersPUT() {
