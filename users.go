@@ -61,12 +61,12 @@ func usersGET(body interface{}) []interface{} {
 	}
 	var resp []interface{}
 	for rows.Next() {
-		var r User
-		err = rows.Scan(&r.Id, &r.Name, &r.Surname, &r.Age)
+		var u User
+		err = rows.Scan(&u.Id, &u.Name, &u.Surname, &u.Age)
 		if err != nil {
 			ErrorLogger.Println("Failed to read DB response")
 		}
-		resp = append(resp, structToMap(r))
+		resp = append(resp, structToMap(u))
 	}
 	return resp
 }
