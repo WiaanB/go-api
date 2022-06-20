@@ -7,7 +7,8 @@ import (
 	"net/http"
 )
 
-// Read a body for the request if there is one, else return an empty interface{}
+// Read a body for the request if there is one, else return an empty interface{}.
+
 func readRequestBody(r *http.Request) interface{} {
 	var body interface{}
 	b, err := ioutil.ReadAll(r.Body)
@@ -25,7 +26,8 @@ func readRequestBody(r *http.Request) interface{} {
 	return body
 }
 
-// Try to cast a interface into a JSON map[string]interface{}
+// Try to cast a interface into a JSON map[string]interface{}.
+
 func interfaceToMap(b interface{}) (map[string]interface{}, bool) {
 	if m, ok := b.(map[string]interface{}); !ok {
 		ErrorLogger.Println("Could not read the JSON body.")
@@ -34,6 +36,8 @@ func interfaceToMap(b interface{}) (map[string]interface{}, bool) {
 		return m, false
 	}
 }
+
+// Takes a interface (struct) and returns the map value of it.
 
 func structToMap(i interface{}) (m map[string]interface{}) {
 	data, _ := json.Marshal(i)
