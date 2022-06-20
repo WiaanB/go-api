@@ -56,6 +56,9 @@ func usersGET(body interface{}) []interface{} {
 		stmnt = "SELECT * FROM users;"
 	}
 	rows, err := DB.Query(stmnt)
+	if err != nil {
+		ErrorLogger.Println("Failed to query DB")
+	}
 	var resp []interface{}
 	for rows.Next() {
 		var r User
