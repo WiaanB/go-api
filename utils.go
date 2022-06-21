@@ -47,3 +47,11 @@ func structToMap(i interface{}) (m map[string]interface{}) {
 	}
 	return
 }
+
+// Function to check errors and handle them
+
+func errorHandle(e error, m string) {
+	if e != nil {
+		ErrorLogger.Println(m)
+	}
+}

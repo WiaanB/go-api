@@ -23,9 +23,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 		response := usersGET(body)
 		w.Header().Set("Content-Type", "application/json")
 		j, err := json.Marshal(response)
-		if err != nil {
-			ErrorLogger.Println("Failed to convert JSON body")
-		}
+		errorHandle(err, "Failed to convert JSON body")
 		w.Write(j)
 	case "POST":
 		usersPOST(fmt.Sprintf("%v", req.URL))
@@ -56,16 +54,12 @@ func usersGET(body interface{}) []interface{} {
 		stmnt = "SELECT * FROM users;"
 	}
 	rows, err := DB.Query(stmnt)
-	if err != nil {
-		ErrorLogger.Println("Failed to query DB")
-	}
+	errorHandle(err, "Failed to query DB")
 	var resp []interface{}
 	for rows.Next() {
 		var u User
 		err = rows.Scan(&u.Id, &u.Name, &u.Surname, &u.Age)
-		if err != nil {
-			ErrorLogger.Println("Failed to read DB response")
-		}
+		errorHandle(err, "Failed to read the row values")
 		resp = append(resp, structToMap(u))
 	}
 	return resp
