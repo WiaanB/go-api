@@ -21,6 +21,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "GET":
 		response := usersGET(body)
+		// Write a JSON response
 		w.Header().Set("Content-Type", "application/json")
 		j, err := json.Marshal(response)
 		errorHandle(err, "Failed to convert JSON body")
@@ -66,6 +67,7 @@ func usersGET(body interface{}) []interface{} {
 }
 
 func usersPOST(u string) {
+	// Get the action specified from the URL
 	split := strings.Split(u, "/")
 	action := split[len(split)-1]
 	if action == "" {
