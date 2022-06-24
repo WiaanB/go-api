@@ -27,6 +27,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 		errorHandle(err, "Failed to convert JSON body")
 		w.Write(j)
 	case "POST":
+		// add a user
 		usersPOST(fmt.Sprintf("%v", req.URL))
 	case "PUT":
 		usersPUT()
