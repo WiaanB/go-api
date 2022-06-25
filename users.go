@@ -76,14 +76,16 @@ func usersGET(body interface{}) []interface{} {
 	return resp
 }
 
-func usersPOST(u string) {
+func usersPOST(u string) (map[string]interface{}, string) {
 	// Get the action specified from the URL
 	split := strings.Split(u, "/")
 	action := split[len(split)-1]
-	if action == "" {
-		fmt.Println("EMPTY?!")
+	// Should be add only
+	if action != "add" {
+		return nil, "No such supported action"
 	}
 	fmt.Println("POST USERS", action)
+	return nil, ""
 }
 
 func usersPUT() {
