@@ -14,6 +14,19 @@ type User struct {
 	Age     int    `json:"age"`
 }
 
+func (u *User) validateUser() []string {
+	var s []string
+	if u.Name == "" {
+		s = append(s, "no name supplied")
+	}
+	if u.Age > 0 {
+		s = append(s, "user needs an age above 0")
+	}
+	if u.Surname == "" {
+		s = append(s, "no surname supplied")
+	}
+	return s
+}
 func handleUsers(w http.ResponseWriter, req *http.Request) {
 	// Receiving the body to pass along
 	body := readRequestBody(req)
