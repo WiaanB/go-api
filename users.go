@@ -27,6 +27,11 @@ func (u *User) validateUser() []string {
 	}
 	return s
 }
+
+func (u *User) sqlStatement() string {
+	var s string
+	return s
+}
 func handleUsers(w http.ResponseWriter, req *http.Request) {
 	// Receiving the body to pass along
 	body := readRequestBody(req)
