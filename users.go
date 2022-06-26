@@ -32,6 +32,7 @@ func (u *User) sqlStatement() string {
 	var s string
 	return s
 }
+
 func handleUsers(w http.ResponseWriter, req *http.Request) {
 	// Receiving the body to pass along
 	body := readRequestBody(req)
@@ -45,8 +46,18 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 		errorHandle(err, "Failed to convert JSON body")
 		w.Write(j)
 	case "POST":
+		w.Header().Set("Content-Type", "application/json")
 		// add a user
-		usersPOST(fmt.Sprintf("%v", req.URL))
+		val, msg := usersPOST(fmt.Sprintf("%v", req.URL), body)
+		if msg != "" {
+			j, err := json.Marshal(map[string]interface{}{"error": msg})
+			errorHandle(err, "Failed to convert JSON body")
+			w.Write(j)
+		} else {
+			j, err := json.Marshal(val)
+			errorHandle(err, "Failed to convert JSON body")
+			w.Write(j)
+		}
 	case "PUT":
 		usersPUT()
 	case "DELETE":
