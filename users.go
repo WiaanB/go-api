@@ -105,15 +105,32 @@ func usersGET(body interface{}) []interface{} {
 	return resp
 }
 
-func usersPOST(u string) (map[string]interface{}, string) {
+func usersPOST(u string, body interface{}) (map[string]interface{}, string) {
 	// Get the action specified from the URL
 	split := strings.Split(u, "/")
 	action := split[len(split)-1]
 	// Should be add only
 	if action != "add" {
-		return nil, "No such supported action"
+		return nil, "unsupported action"
 	}
-	fmt.Println("POST USERS", action)
+	// Create a Struct from the body
+	m, test := interfaceToMap(body)
+	if test {
+		ErrorLogger.Println("Failed to convert JSON body")
+	}
+	jsonStr, err := json.Marshal(m)
+	errorHandle(err, "Failed to marshal JSON")
+	// create User
+	var user User
+	err = json.Unmarshal(jsonStr, &user)
+	errorHandle(err, "Failed to marshal JSON")
+	errors := user.validateUser()
+	if len(errors) > 0 {
+		return map[string]interface{}{"errors": errors}, ""
+	} else {
+
+	}
+	fmt.Println("POST USERS", user)
 	return nil, ""
 }
 
