@@ -29,8 +29,7 @@ func (u *User) validateUser() []string {
 }
 
 func (u *User) sqlStatement() string {
-	var s string
-	return s
+	return fmt.Sprintf("(Name, Surname, Age) VALUES (%s, %s, %d)", u.Name, u.Surname, u.Age)
 }
 
 func handleUsers(w http.ResponseWriter, req *http.Request) {
