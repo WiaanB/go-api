@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 )
 
@@ -17,7 +16,7 @@ func initializeTables() {
 	);
 	`
 	executeSQL(DB, users)
-	executeSQL(DB, fmt.Sprintf("INSERT INTO users (name, surname, age) VALUES ('wiaan', 'botha', 23);"))
+	executeSQL(DB, "INSERT INTO users (name, surname, age) VALUES ('wiaan', 'botha', 23);")
 	books := `DROP TABLE IF EXISTS books;
 	CREATE TABLE books (
 		id 			SERIAL PRIMARY KEY,
@@ -28,7 +27,7 @@ func initializeTables() {
 	);
 	`
 	executeSQL(DB, books)
-	executeSQL(DB, fmt.Sprintf("INSERT INTO books (ISBN, title, author, pages) VALUES (2341, 'The Martian Threat', 'Dave Campbell', 342);"))
+	executeSQL(DB, "INSERT INTO books (ISBN, title, author, pages) VALUES (2341, 'The Martian Threat', 'Dave Campbell', 342);")
 	authors := `DROP TABLE IF EXISTS authors;
 	CREATE TABLE authors (
 		id 			SERIAL PRIMARY KEY,
@@ -38,7 +37,7 @@ func initializeTables() {
 	);
 	`
 	executeSQL(DB, authors)
-	executeSQL(DB, fmt.Sprintf("INSERT INTO authors (name, books, awards) VALUES ('Dave Campbell', 1, 0);"))
+	executeSQL(DB, "INSERT INTO authors (name, books, awards) VALUES ('Dave Campbell', 1, 0);")
 }
 
 func executeSQL(db *sql.DB, query string) {
