@@ -19,7 +19,7 @@ func (u *User) validateUser() []string {
 	if u.Name == "" {
 		s = append(s, "no name supplied")
 	}
-	if u.Age > 0 {
+	if u.Age < 0 {
 		s = append(s, "user needs an age above 0")
 	}
 	if u.Surname == "" {
