@@ -28,7 +28,7 @@ func (u *User) validateUser() []string {
 	return s
 }
 
-func (u *User) sqlStatement() string {
+func (u *User) sqlizeValues() string {
 	return fmt.Sprintf("(Name, Surname, Age) VALUES (%s, %s, %d)", u.Name, u.Surname, u.Age)
 }
 
