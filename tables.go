@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
 )
 
 func initializeTables() {
@@ -42,8 +42,5 @@ func initializeTables() {
 
 func executeSQL(db *sql.DB, query string) {
 	_, err := db.Exec(query)
-	if err != nil {
-		ErrorLogger.Printf("Failed to execute query, following error occured: %s\n", err.Error())
-		log.Fatal(err)
-	}
+	errorHandle(err, fmt.Sprintf("Failed to execute query, following error occured: %s\n", err.Error()))
 }
