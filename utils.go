@@ -52,6 +52,12 @@ func structToMap(i interface{}) (m map[string]interface{}) {
 
 func errorHandle(e error, m string) {
 	if e != nil {
-		ErrorLogger.Println(m)
+		if e.Error() != "" {
+			ErrorLogger.Printf("%s: %s\n", m, e.Error())
+			log.Fatalf("%s: %s\n", m, e.Error())
+		} else {
+			ErrorLogger.Println(m)
+			log.Fatalf("%s\n", m)
+		}
 	}
 }
