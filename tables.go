@@ -1,10 +1,5 @@
 package main
 
-import (
-	"database/sql"
-	"fmt"
-)
-
 func initializeTables() {
 	InfoLogger.Println("Setting up base tables...")
 	users := `DROP TABLE IF EXISTS users;
@@ -15,8 +10,8 @@ func initializeTables() {
 		age			INT
 	);
 	`
-	executeSQL(DB, users)
-	executeSQL(DB, "INSERT INTO users (name, surname, age) VALUES ('wiaan', 'botha', 23);")
+	executeSQL(users)
+	executeSQL("INSERT INTO users (name, surname, age) VALUES ('wiaan', 'botha', 23);")
 	books := `DROP TABLE IF EXISTS books;
 	CREATE TABLE books (
 		id 			SERIAL PRIMARY KEY,
@@ -26,8 +21,8 @@ func initializeTables() {
 		pages		INT
 	);
 	`
-	executeSQL(DB, books)
-	executeSQL(DB, "INSERT INTO books (ISBN, title, author, pages) VALUES (2341, 'The Martian Threat', 'Dave Campbell', 342);")
+	executeSQL(books)
+	executeSQL("INSERT INTO books (ISBN, title, author, pages) VALUES (2341, 'The Martian Threat', 'Dave Campbell', 342);")
 	authors := `DROP TABLE IF EXISTS authors;
 	CREATE TABLE authors (
 		id 			SERIAL PRIMARY KEY,
@@ -36,11 +31,11 @@ func initializeTables() {
 		awards		INT
 	);
 	`
-	executeSQL(DB, authors)
-	executeSQL(DB, "INSERT INTO authors (name, books, awards) VALUES ('Dave Campbell', 1, 0);")
+	executeSQL(authors)
+	executeSQL("INSERT INTO authors (name, books, awards) VALUES ('Dave Campbell', 1, 0);")
 }
 
-func executeSQL(db *sql.DB, query string) {
-	_, err := db.Exec(query)
-	errorHandle(err, fmt.Sprintf("Failed to execute query, following error occured: %s\n", err.Error()))
+func executeSQL(query string) {
+	_, err := DB.Exec(query)
+	errorHandle(err, "Failed to execute query")
 }
