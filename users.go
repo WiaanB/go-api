@@ -29,10 +29,6 @@ func (u *User) validateUser() []string {
 	return s
 }
 
-func (u *User) sqlizeValues() string {
-	return fmt.Sprintf("(name, surname, age) VALUES ('%s', '%s', %d)", u.Name, u.Surname, u.Age)
-}
-
 func handleUsers(w http.ResponseWriter, req *http.Request) {
 	// Receiving the body to pass along
 	body := readRequestBody(req)
