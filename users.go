@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -58,7 +59,7 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 			w.Write(j)
 		}
 	case "PUT":
-		usersPUT()
+		usersPUT(fmt.Sprintf("%v", req.URL), body)
 	case "DELETE":
 		usersDELETE()
 	}
@@ -133,8 +134,23 @@ func usersPOST(u string, body interface{}) (map[string]interface{}, string) {
 	return map[string]interface{}{"status": 200, "message": "user created successfully", "data": user}, ""
 }
 
-func usersPUT() {
-	fmt.Println("PUT USERS")
+func usersPUT(url string, body interface{}) (map[string]interface{}, string) {
+	// Get the id specified from the URL
+	split := strings.Split(url, "/")
+	id := split[len(split)-1]
+	// cast the id to string
+	givenInt, err := strconv.Atoi(id)
+	if err != nil {
+		errorHandle(err, "Failed to convert id to int")
+		return nil, "failed to convert id to int"
+	}
+	// Create a Struct from the body
+	m, test := interfaceToMap(body)
+	if test {
+		ErrorLogger.Println("Failed to convert JSON body")
+	}
+	fmt.Println(givenInt, m)
+	return nil, ""
 }
 
 func usersDELETE() {
