@@ -127,7 +127,7 @@ func usersPOST(u string, body interface{}) (map[string]interface{}, string) {
 	if len(errors) > 0 {
 		return map[string]interface{}{"errors": errors}, ""
 	} else {
-		err = DB.QueryRow("INSERT INTO users (name, surname, age) VALUES($1,$2,$3) RETURNING id", user.Name, user.Surname, user.Age).Scan(&user.Id)
+		err = DB.QueryRow("INSERT INTO users (name, surname, age) VALUES($1, $2, $3) RETURNING id", user.Name, user.Surname, user.Age).Scan(&user.Id)
 		errorHandle(err, "Failed to add user")
 	}
 	return map[string]interface{}{"status": 200, "message": "user created successfully", "data": user}, ""
