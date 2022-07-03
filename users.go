@@ -145,6 +145,7 @@ func usersPUT(url string, body interface{}) (map[string]interface{}, string) {
 	if test {
 		ErrorLogger.Println("Failed to convert JSON body")
 	}
+	DB.QueryRow("UPDATE users SET name = $2, surname = $3, age = $4 WHERE id = $1", givenInt, m["name"], m["surname"], m["age"])
 	fmt.Println(givenInt, m)
 	return nil, ""
 }
