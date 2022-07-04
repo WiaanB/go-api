@@ -67,7 +67,17 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 			w.Write(j)
 		}
 	case "DELETE":
-		usersDELETE()
+		w.Header().Set("Content-Type", "application/json")
+		val, msg := usersDELETE(fmt.Sprintf("%v", req.URL))
+		if msg != "" {
+			j, err := json.Marshal(map[string]interface{}{"error": msg})
+			errorHandle(err, "Failed to convert JSON body")
+			w.Write(j)
+		} else {
+			j, err := json.Marshal(val)
+			errorHandle(err, "Failed to convert JSON body")
+			w.Write(j)
+		}
 	}
 }
 
@@ -162,6 +172,18 @@ func usersPUT(url string, body interface{}) (map[string]interface{}, string) {
 	return map[string]interface{}{"status": 200, "message": "user updated successfully", "data": m}, ""
 }
 
-func usersDELETE() {
-	fmt.Println("DELETE USERS")
+func usersDELETE(url string) (map[string]interface{}, string) {
+	// Get the id specified from the URL
+	split := strings.Split(url, "/")
+	id := split[len(split)-1]
+	// cast the id to string
+	givenInt, err := strconv.Atoi(id)
+	if err != nil {
+		errorHandle(err, "Failed to convert id to int")
+		return nil, "failed to convert id to int"
+	}
+	// do the delete of the user
+	DB.QueryRow("DELETE FROM users WHERE id = $1", givenInt)
+
+	return map[string]interface{}{"status": 200, "message": "user deleted successfully", "data": givenInt}, ""
 }
