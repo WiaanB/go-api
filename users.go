@@ -130,6 +130,7 @@ func usersPOST(u string, body interface{}) (map[string]interface{}, string) {
 	var user User
 	err = json.Unmarshal(jsonStr, &user)
 	errorHandle(err, "Failed to marshal JSON")
+	// ensure the user is correct
 	errors := user.validateUser()
 	if len(errors) > 0 {
 		return map[string]interface{}{"errors": errors}, ""
@@ -155,6 +156,7 @@ func usersPUT(url string, body interface{}) (map[string]interface{}, string) {
 	if test {
 		ErrorLogger.Println("Failed to convert JSON body")
 	}
+	// do the update of the user
 	DB.QueryRow("UPDATE users SET name = $2, surname = $3, age = $4 WHERE id = $1", givenInt, m["name"], m["surname"], m["age"])
 
 	return map[string]interface{}{"status": 200, "message": "user updated successfully", "data": m}, ""
