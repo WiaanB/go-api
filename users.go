@@ -55,7 +55,17 @@ func handleUsers(w http.ResponseWriter, req *http.Request) {
 			w.Write(j)
 		}
 	case "PUT":
-		usersPUT(fmt.Sprintf("%v", req.URL), body)
+		w.Header().Set("Content-Type", "application/json")
+		val, msg := usersPUT(fmt.Sprintf("%v", req.URL), body)
+		if msg != "" {
+			j, err := json.Marshal(map[string]interface{}{"error": msg})
+			errorHandle(err, "Failed to convert JSON body")
+			w.Write(j)
+		} else {
+			j, err := json.Marshal(val)
+			errorHandle(err, "Failed to convert JSON body")
+			w.Write(j)
+		}
 	case "DELETE":
 		usersDELETE()
 	}
@@ -146,8 +156,8 @@ func usersPUT(url string, body interface{}) (map[string]interface{}, string) {
 		ErrorLogger.Println("Failed to convert JSON body")
 	}
 	DB.QueryRow("UPDATE users SET name = $2, surname = $3, age = $4 WHERE id = $1", givenInt, m["name"], m["surname"], m["age"])
-	fmt.Println(givenInt, m)
-	return nil, ""
+
+	return map[string]interface{}{"status": 200, "message": "user updated successfully", "data": m}, ""
 }
 
 func usersDELETE() {
